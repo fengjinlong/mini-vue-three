@@ -30,12 +30,15 @@ setup () {
   }
 }
 ```
-#### 3 
+#### 2
 ```typescript
-// 流程
+// 初始化流程
 createApp -> render -> patch -> 区分patch啥（1 patch text，2 patch element，3 patch component）
+
+// 更新流程
+
 ```
-#### 2 patch 组件流程
+#### 3 patch 组件流程
 - 初始化
 ```typescript
 mountComponent 适合创建 instance 对象
