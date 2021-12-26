@@ -54,5 +54,7 @@ instancce -> {
   type -> {组件}
   vnode
 }
+
+// TODO 对比mini-vue具体简单分析一下各个属性，主要流程
 ```
 - 更新
