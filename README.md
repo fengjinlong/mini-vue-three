@@ -39,7 +39,7 @@ createApp -> render -> patch -> 区分patch啥（1 patch text，2 patch element�
 
 ```
 #### 3 patch 组件流程
-- 初始化
+- 组件初始化
 ```typescript
 mountComponent 适合创建 instance 对象
 
@@ -60,4 +60,4 @@ instancce -> {
 
 // TODO 对比mini-vue具体简单分析一下各个属性，主要流程
 ```
-- 更新
+- 组件更新
