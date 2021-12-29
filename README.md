@@ -62,9 +62,26 @@ instancce -> {
 // TODO 对比mini-vue具体简单分析一下各个属性，主要流程
 ```
 - 组件更新
-- 组件更新
-- 组件更新
-- 组件更新
-- 组件更新
-- 组件更新
-- 组件更新
+
+#### 初始项目搭建
+1. 安装依赖
+
+```typescript
+// jest
+"@types/jest": "^27.0.3",
+"jest": "^27.4.5"
+
+// tsconfig.json
+"type": ["jest"]
+
+// jest 默认是nodejs 环境，也就是commonjs 规范，需要用babel转换成esm规范
+// 依赖
+yarn add --dev @babel/preset-typescript babel-jest @babel/core @babel/preset-env
+// babel.config.js
+module.exports = {
+  presets: [
+    ['@babel/preset-env', {targets: {node: 'current'}}],
+    '@babel/preset-typescript',
+  ],
+};
+```
