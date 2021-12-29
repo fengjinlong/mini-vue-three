@@ -1,16 +1,35 @@
+import { extend } from "./shared";
+
 class ReactiveEffect {
   private _fn: any;
+  deps = [];
+  onStop?: () => void;
+  // active 避免重复清空
+  active = true;
   constructor(fn: any, public scheduler?) {
     this._fn = fn;
     // this.scheduler = scheduler;
   }
   run() {
-    activeEffect = this
+    activeEffect = this;
     // return 是为了拿到 runner() 的返回结果
     return this._fn();
   }
+  stop() {
+    if (this.active) {
+      if (this.onStop) {
+        this.onStop();
+      }
+      cleanupEffect(this);
+      this.active = false;
+    }
+  }
 }
-
+function cleanupEffect(effect) {
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect);
+  });
+}
 /**
  * dep依赖 是唯一的，用 Set
  * target 对应 key, key 对应 dep
@@ -30,26 +49,33 @@ export function track(target: any, key: any) {
     dep = new Set();
     depsMap.set(key, dep);
   }
+  if (!activeEffect) return;
   dep.add(activeEffect);
+  activeEffect.deps.push(dep);
 }
 
 export function trigger(target: any, key: any) {
-  let depsMap = targetMap.get(target)
-  let dep = depsMap.get(key)
-  for(const effect of dep) {
+  let depsMap = targetMap.get(target);
+  let dep = depsMap.get(key);
+  for (const effect of dep) {
     if (effect.scheduler) {
-      effect.scheduler()
+      effect.scheduler();
     } else {
-      effect.run()
+      effect.run();
     }
-    
   }
 }
 
 let activeEffect: any;
-export function effect(fn: any, options: any={}) {
-  const {scheduler} = options;
+export function effect(fn: any, options: any = {}) {
+  const { scheduler } = options;
   const _effect = new ReactiveEffect(fn, scheduler);
+  extend(_effect, options);
   _effect.run();
-  return _effect.run.bind(_effect)
+  const runner: any = _effect.run.bind(_effect);
+  runner.effect = _effect;
+  return runner;
+}
+export function stop(runner) {
+  runner.effect.stop();
 }
