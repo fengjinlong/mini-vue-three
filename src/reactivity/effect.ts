@@ -53,6 +53,7 @@ const targetMap = new Map();
 export function track(target: any, key: any) {
   // if (!activeEffect) return;
   // if (!shouldTrack) return;
+  // 重构
   if (!isTracking()) return;
 
   let depsMap = targetMap.get(target);
@@ -65,19 +66,25 @@ export function track(target: any, key: any) {
     dep = new Set();
     depsMap.set(key, dep);
   }
-
+  trackEffects(dep);
+}
+export function trackEffects(dep) {
   if (dep.has(activeEffect)) return;
   dep.add(activeEffect);
   activeEffect.deps.push(dep);
 }
 
-function isTracking() {
+export function isTracking() {
   return shouldTrack && activeEffect !== undefined;
 }
 
 export function trigger(target: any, key: any) {
   let depsMap = targetMap.get(target);
   let dep = depsMap.get(key);
+  triggerEffects(dep);
+}
+
+export function triggerEffects(dep: any) {
   for (const effect of dep) {
     if (effect.scheduler) {
       effect.scheduler();
