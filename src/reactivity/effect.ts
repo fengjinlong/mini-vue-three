@@ -1,5 +1,7 @@
 import { extend } from "./shared";
 
+let activeEffect: any;
+let shouldTrack: any;
 class ReactiveEffect {
   private _fn: any;
   deps = [];
@@ -11,9 +13,18 @@ class ReactiveEffect {
     // this.scheduler = scheduler;
   }
   run() {
+    if (!this.active) {
+      // stop 状态
+      return this._fn();
+    }
+
+    shouldTrack = true;
     activeEffect = this;
+
+    const res = this._fn();
+    shouldTrack = false;
     // return 是为了拿到 runner() 的返回结果
-    return this._fn();
+    return res;
   }
   stop() {
     if (this.active) {
@@ -29,6 +40,7 @@ function cleanupEffect(effect) {
   effect.deps.forEach((dep: any) => {
     dep.delete(effect);
   });
+  effect.deps.length = 0;
 }
 /**
  * dep依赖 是唯一的，用 Set
@@ -39,6 +51,10 @@ function cleanupEffect(effect) {
  */
 const targetMap = new Map();
 export function track(target: any, key: any) {
+  // if (!activeEffect) return;
+  // if (!shouldTrack) return;
+  if (!isTracking()) return;
+
   let depsMap = targetMap.get(target);
   if (!depsMap) {
     depsMap = new Map();
@@ -49,9 +65,14 @@ export function track(target: any, key: any) {
     dep = new Set();
     depsMap.set(key, dep);
   }
-  if (!activeEffect) return;
+
+  if (dep.has(activeEffect)) return;
   dep.add(activeEffect);
   activeEffect.deps.push(dep);
+}
+
+function isTracking() {
+  return shouldTrack && activeEffect !== undefined;
 }
 
 export function trigger(target: any, key: any) {
@@ -66,7 +87,6 @@ export function trigger(target: any, key: any) {
   }
 }
 
-let activeEffect: any;
 export function effect(fn: any, options: any = {}) {
   const { scheduler } = options;
   const _effect = new ReactiveEffect(fn, scheduler);
