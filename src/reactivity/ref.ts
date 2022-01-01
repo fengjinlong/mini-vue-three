@@ -6,6 +6,7 @@ class RefImpl {
   private _value: any;
   public dep;
   private _rawValue: any;
+  public __v_isRef = true;
   constructor(value) {
     /**
      * 如果是对象的话
@@ -43,4 +44,24 @@ function trackRefValue(ref) {
   if (isTracking()) {
     trackEffects(ref.dep);
   }
+}
+export function isRef(value: any) {
+  return !!value.__v_isRef;
+}
+export function unRef(value) {
+  return isRef(value) ? value.value : value;
+}
+export function proxyRef(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      return unRef(Reflect.get(target, key));
+    },
+    set(target, key, value) {
+      if (isRef(target[key]) && !isRef(value)) {
+        return (target[key].value = value);
+      } else {
+        return Reflect.set(target, key, value);
+      }
+    },
+  });
 }
