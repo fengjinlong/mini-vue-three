@@ -6,12 +6,14 @@ export const App = {
     return h(
       "div",
       {
+        id: "root",
       },
-      "hi mini-vue" + this.msg
+      // "hi mini-vue" + this.msg
+      [h("p", {}, "p1"), h("p", {}, "p2")]
     );
   },
   setup() {
-    const msg = 1
+    const msg = 1;
 
     return {
       msg,
