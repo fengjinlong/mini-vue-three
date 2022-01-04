@@ -8,13 +8,13 @@ export const App = {
       {
         id: "root",
       },
-      // "hi mini-vue" + this.msg
-      [h("p", {}, "p1"), h("p", {}, "p2")]
+
+      "hi mini-vue" + this.msg
+      // [h("p", {}, "p1"), h("p", {}, "p2")]
     );
   },
   setup() {
     const msg = 1;
-
     return {
       msg,
     };
