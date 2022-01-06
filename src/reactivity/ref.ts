@@ -1,6 +1,6 @@
 import { isTracking, trackEffects, triggerEffects } from "./effect";
 import { reactive } from "./reactive";
-import { hasChange, isObject } from "../shared/index";
+import { hasChanged, isObject } from "../shared/index";
 
 class RefImpl {
   private _value: any;
@@ -10,7 +10,7 @@ class RefImpl {
   constructor(value) {
     /**
      * 如果是对象的话
-     * set 逻辑里面  hasChange(newValue, this._value) 一个是object，一个是isProxy，肯定不相等，所以这需要对比原始值
+     * set 逻辑里面  hasChanged(newValue, this._value) 一个是object，一个是isProxy，肯定不相等，所以这需要对比原始值
      * 原始值 _rawValue
      *
      */
@@ -24,8 +24,8 @@ class RefImpl {
     return this._value;
   }
   set value(newValue: any) {
-    // if (hasChange(newValue, this._value)) {
-    if (hasChange(newValue, this._rawValue)) {
+    // if (hasChanged(newValue, this._value)) {
+    if (hasChanged(newValue, this._rawValue)) {
       // 转换值
       this._value = convert(newValue);
       this._rawValue = newValue;
