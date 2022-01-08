@@ -16,8 +16,8 @@ export const APP = {
       Foo,
       {},
       {
-        header: ({ age }) => [
-          h("p", {}, "header" + age),
+        header: ({age}) => [
+          h("h2", {}, "header" + age),
           createTextVNode("text vnode"),
         ],
         footer: () => h("p", {}, "footer"),
