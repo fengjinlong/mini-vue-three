@@ -85,3 +85,11 @@ module.exports = {
   ],
 };
 ```
+
+
+
+## 补充
+### getCurrentInstance 只能在setup 里面用，所有只能在setup 逻辑里面赋值
+### provide inject
+1. provide inject 就是把数据存到当前组件实例对象，然后在取出来。既然要用实例，那肯定是 在setup 里面调用的。
+2. 只不过就是 一个在父组件存 一个在子组件取

@@ -1,11 +1,14 @@
-import { h } from "../../lib/guide-mini-vue.esm.js"
+import { h, getCurrentInstance } from "../../lib/guide-mini-vue.esm.js";
 
 export const Foo = {
-  setup (props) {
-    console.log(props)
+  setup(props) {
+    console.log(props);
+    console.log(this);
+
+    console.log(getCurrentInstance());
     // this.props.count = 1
   },
   render() {
-    return h("div",{},"foo-props: "+ this.count)
-  }
-}
+    return h("div", {}, "foo-props: " + this.count);
+  },
+};
