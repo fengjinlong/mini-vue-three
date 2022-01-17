@@ -95,6 +95,6 @@ module.exports = {
 2. 只不过就是 一个在父组件存 一个在子组件取
 
 
-3. 更新的本质就是虚拟dom的对比更新
+3. 更新属性的本质就是虚拟dom的对比更新
 调用render函数会生成虚拟dom，也就是，响应式数据的更新要触发render，也就是 用effect 包裹 render
 
