@@ -93,3 +93,8 @@ module.exports = {
 ### provide inject
 1. provide inject 就是把数据存到当前组件实例对象，然后在取出来。既然要用实例，那肯定是 在setup 里面调用的。
 2. 只不过就是 一个在父组件存 一个在子组件取
+
+
+3. 更新的本质就是虚拟dom的对比更新
+调用render函数会生成虚拟dom，也就是，响应式数据的更新要触发render，也就是 用effect 包裹 render
+
