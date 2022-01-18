@@ -20,8 +20,7 @@ export function createRenderer(options) {
   // n1 老的
   // n2 新的
   function patch(n1, n2, container: any, parentComponent, anchor) {
-
-    console.log("patch ", anchor)
+    console.log("patch ", anchor);
     // 当vnode.type的值时，组件是object，element是string，这样区分组件和元素
 
     const { type, shapeFlag } = n2;
@@ -184,17 +183,26 @@ export function createRenderer(options) {
     // }
     if (i > e1) {
       if (i <= e2) {
-        console.warn(11)
-        const nextPos = i + 1;
-        // let anchor = i + 1 < c2.length ? c2[nextPos].el : null;
-        let c2Have =c2[e2 + 1] ? c2[e2 + 1] : c2[nextPos];
-        let anchor = i + 1 < c2.length ? c2Have.el : null;
+        const nextPos = e2 + 1;
+        let anchor = nextPos < c2.length ? c2[nextPos].el : null;
 
-        console.warn(anchor)
+        // 或者下面的逻辑
+        // let c2Have =c2[e2 + 1] ? c2[e2 + 1] : c2[nextPos];
+        // let anchor = i + 1 < c2.length ? c2Have.el : null;
+
         while (i <= e2) {
           patch(null, c2[i], container, parentComponent, anchor);
           i++;
         }
+      }
+    } else if (i > e2) {
+      /**
+       * 老的比新的多
+       *
+       */
+      while (i <= e1) {
+        hostRemove(c1[i].el);
+        i++;
       }
     }
   }
