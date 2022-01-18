@@ -8,10 +8,12 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 // (a b) d e
 // const prevChildren = [
 //   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
 //   h("p", { key: "C" }, "C"),
 // ];
 // const nextChildren = [
 //   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
 //   h("p", { key: "D" }, "D"),
 //   h("p", { key: "E" }, "E"),
 // ];
@@ -51,8 +53,10 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 // i = 0, e1 = -1, e2 = 0
 // const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
 // const nextChildren = [
-//   h("p", { key: "C" }, "Ca"),
-//   h("p", { key: "C" }, "Ca"),
+//   h("p", { key: "C3" }, "Ca3"),
+//   h("p", { key: "C2" }, "Ca2"),
+//   h("p", { key: "D1" }, "D1"),
+//   h("p", { key: "D" }, "D"),
 //   h("p", { key: "A" }, "A"),
 //   h("p", { key: "B" }, "B"),
 // ];
@@ -63,12 +67,12 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 // (a b) c
 // (a b)
 // i = 2, e1 = 2, e2 = 1
-// const prevChildren = [
-//   h("p", { key: "A" }, "A"),
-//   h("p", { key: "B" }, "B"),
-//   h("p", { key: "C" }, "C"),
-// ];
-// const nextChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
+const prevChildren = [
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
+  h("p", { key: "C" }, "C"),
+];
+const nextChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
 
 // 右侧
 // a (b c)
@@ -163,27 +167,27 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 // a,b,(c,d,e,z),f,g
 // a,b,(d,c,y,e),f,g
 
-const prevChildren = [
-  h("p", { key: "A" }, "A"),
-  h("p", { key: "B" }, "B"),
-  h("p", { key: "C" }, "C"),
-  h("p", { key: "D" }, "D"),
-  h("p", { key: "E" }, "E"),
-  h("p", { key: "Z" }, "Z"),
-  h("p", { key: "F" }, "F"),
-  h("p", { key: "G" }, "G"),
-];
+// const prevChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "Z" }, "Z"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
 
-const nextChildren = [
-  h("p", { key: "A" }, "A"),
-  h("p", { key: "B" }, "B"),
-  h("p", { key: "D" }, "D"),
-  h("p", { key: "C" }, "C"),
-  h("p", { key: "Y" }, "Y"),
-  h("p", { key: "E" }, "E"),
-  h("p", { key: "F" }, "F"),
-  h("p", { key: "G" }, "G"),
-];
+// const nextChildren = [
+//   h("p", { key: "A" }, "A"),
+//   h("p", { key: "B" }, "B"),
+//   h("p", { key: "D" }, "D"),
+//   h("p", { key: "C" }, "C"),
+//   h("p", { key: "Y" }, "Y"),
+//   h("p", { key: "E" }, "E"),
+//   h("p", { key: "F" }, "F"),
+//   h("p", { key: "G" }, "G"),
+// ];
 
 export default {
   name: "ArrayToArray",

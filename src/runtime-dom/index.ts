@@ -17,16 +17,17 @@ function patchProp(el, key, prevVal, nextval) {
     }
   }
 }
-function insert(el, parent) {
-  parent.append(el);
+function insert(child, parent, anchor) {
+  // parent.append(child);
+  parent.insertBefore(child, anchor || null);
 }
 function remove(child) {
   const parent = child.parentNode;
   if (parent) {
-    parent.removeChild(child)
+    parent.removeChild(child);
   }
 }
-function setElementText (el, text) {
+function setElementText(el, text) {
   el.textContent = text;
 }
 
@@ -35,7 +36,7 @@ const renderer: any = createRenderer({
   patchProp,
   insert,
   setElementText,
-  remove
+  remove,
 });
 export function createApp(...args) {
   return renderer.createApp(...args);
