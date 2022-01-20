@@ -9,6 +9,14 @@ import { initSlots } from "./componentSlots";
 export function createComponentInstance(vnode, parent) {
   const component = {
     vnode,
+    /**
+     * component
+     * 1 组件实例 instance, 为了组件更新逻辑时候 虚拟节点 拿到instance, 从而调用 instance.update()
+     * 2 在组件初始化时候赋值
+     * 3 更新逻辑同时需要更新组件的 props，所以需要存一下 更新的虚拟节点 next
+     * 4 next 是下次要更新的虚拟节点
+     */
+    next: null,
     type: vnode.type,
     setupState: {},
     parent, // provide inject

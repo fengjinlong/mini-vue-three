@@ -3,6 +3,7 @@ import { createComponentInstance, setupComponent } from "./components";
 import { Fragment, Text } from "./vnode";
 import { createAppAPI } from "./createApp";
 import { effect } from "../reactivity/effect";
+import { shouldUpdateComponent } from "./componentUpdateUtils";
 
 export function createRenderer(options) {
   const {
@@ -72,6 +73,7 @@ export function createRenderer(options) {
       // init
       mountElement(n2, container, parentComponent, anchor);
     } else {
+      console.warn("update element");
       // 更新
       patchElement(n1, n2, container, parentComponent, anchor);
     }
@@ -372,7 +374,24 @@ export function createRenderer(options) {
     parentComponent,
     anchor
   ) {
-    mountComponent(n2, container, parentComponent, anchor);
+    if (!n1) {
+      mountComponent(n2, container, parentComponent, anchor);
+    } else {
+      updateComponent(n1, n2);
+    }
+  }
+  function updateComponent(n1, n2) {
+    console.log(5555);
+    const instance = (n2.component = n1.component);
+    if (shouldUpdateComponent(n1, n2)) {
+      instance.next = n2;
+      console.warn("update Component");
+      instance.update();
+    } else {
+      // 不需要更新也要重置虚拟节点 和 el
+      n2.el = n1.el;
+      n2.vnode = n2;
+    }
   }
 
   function mountComponent(
@@ -382,7 +401,10 @@ export function createRenderer(options) {
     anchor
   ) {
     // 根据虚拟节点创建组件实例
-    const instance = createComponentInstance(initialVNode, parentComponent);
+    const instance = (initialVNode.component = createComponentInstance(
+      initialVNode,
+      parentComponent
+    ));
 
     // 初始化，收集信息，instance挂载相关属性，方法, 装箱
     setupComponent(instance);
@@ -409,7 +431,7 @@ export function createRenderer(options) {
     container,
     anchor
   ) {
-    effect(() => {
+    instance.update = effect(() => {
       if (!instance.isMounted) {
         const { proxy } = instance;
         const subTree = (instance.subTree = instance.render.call(proxy));
@@ -418,7 +440,13 @@ export function createRenderer(options) {
         initialVNode.el = subTree.el;
         instance.isMounted = true;
       } else {
-        console.warn("update");
+        // console.warn("update");
+        const { next, vnode } = instance;
+        if (next) {
+          next.el = vnode.el;
+          // 更新属性
+          updateComponentPreRender(instance, next);
+        }
 
         const { proxy } = instance;
         const subTree = instance.render.call(proxy);
@@ -429,6 +457,13 @@ export function createRenderer(options) {
         patch(prevSubTree, subTree, container, instance, anchor);
       }
     });
+  }
+
+  // 更新属性
+  function updateComponentPreRender(instance, next) {
+    instance.vnode = next.vnode;
+    next.vnode = null;
+    instance.props = next.props;
   }
   return {
     createApp: createAppAPI(render),
