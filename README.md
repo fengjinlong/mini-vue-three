@@ -141,3 +141,7 @@ module.exports = {
 - 就是再次调用 render，也就是调用 effect 的返回值
 - 调用时候需要更新组件的 props,也就是将 新的虚拟节点的 props 赋值给 当前组件的 props
 - 组件更新优化点，如果两个虚拟节点的 props 相同，那就没有必要记性组件的更新
+
+## nextTick
+- 同步的更新不能立即执行
+- 通过scheduler 控制更新时机
