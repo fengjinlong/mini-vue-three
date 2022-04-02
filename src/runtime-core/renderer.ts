@@ -402,6 +402,7 @@ export function createRenderer(options) {
     anchor
   ) {
     // 根据虚拟节点创建组件实例
+    // 挂载有创建 instance，更新无，更新直接引用旧节点的 instance
     const instance = (initialVNode.component = createComponentInstance(
       initialVNode,
       parentComponent
@@ -432,37 +433,40 @@ export function createRenderer(options) {
     container,
     anchor
   ) {
-    instance.update = effect(() => {
-      if (!instance.isMounted) {
-        const { proxy } = instance;
-        const subTree = (instance.subTree = instance.render.call(proxy));
-        // vnode -> element -> mountElement
-        patch(null, subTree, container, instance, anchor);
-        initialVNode.el = subTree.el;
-        instance.isMounted = true;
-      } else {
-        // console.warn("update");
-        const { next, vnode } = instance;
-        if (next) {
-          next.el = vnode.el;
-          // 更新属性
-          updateComponentPreRender(instance, next);
+    instance.update = effect(
+      () => {
+        if (!instance.isMounted) {
+          const { proxy } = instance;
+          const subTree = (instance.subTree = instance.render.call(proxy));
+          // vnode -> element -> mountElement
+          patch(null, subTree, container, instance, anchor);
+          initialVNode.el = subTree.el;
+          instance.isMounted = true;
+        } else {
+          // console.warn("update");
+          const { next, vnode } = instance;
+          if (next) {
+            next.el = vnode.el;
+            // 更新属性
+            updateComponentPreRender(instance, next);
+          }
+
+          const { proxy } = instance;
+          const subTree = instance.render.call(proxy);
+          const prevSubTree = instance.subTree;
+
+          // vnode -> element -> mountElement
+          instance.subTree = subTree;
+          patch(prevSubTree, subTree, container, instance, anchor);
         }
-
-        const { proxy } = instance;
-        const subTree = instance.render.call(proxy);
-        const prevSubTree = instance.subTree;
-
-        // vnode -> element -> mountElement
-        instance.subTree = subTree;
-        patch(prevSubTree, subTree, container, instance, anchor);
+      },
+      {
+        scheduler() {
+          console.log("通过scheduler ...");
+          queueJobs(instance.update);
+        },
       }
-    }, {
-    scheduler() {
-      console.log('通过scheduler ...')
-      queueJobs(instance.update)
-    }
-    });
+    );
   }
 
   // 更新属性
