@@ -82,8 +82,8 @@ const enum TagType {
 }
 function parseElement(context: any) {
   const element: any = parseTag(context, TagType.Start);
-  parseTag(context, TagType.End);
   element.children = parseChildren(context, element.tag);
+  parseTag(context, TagType.End);
   return element;
 }
 function parseTag(context: any, type: TagType) {
