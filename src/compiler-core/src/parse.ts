@@ -12,10 +12,11 @@ function createParserContext(content: string) {
 }
 function parseChildren(context, parentTag): any {
   const nodes: any = [];
+  let str = !isEnd(context, parentTag) 
   while (!isEnd(context, parentTag)) {
     let node;
     let s = context.source;
-
+    
     if (s.startsWith("{{")) {
       node = parseInterpolation(context);
     } else if (s[0] === "<") {
@@ -86,11 +87,14 @@ function parseElement(context: any) {
   return element;
 }
 function parseTag(context: any, type: TagType) {
+  console.log(context.source)
   const match: any = /^<\/?([a-z]*)/i.exec(context.source);
+  if (!match) return
   const tag = match[1];
   advanceBy(context, match[0].length);
   advanceBy(context, 1);
   if (type === TagType.End) return;
+  console.log(tag)
   return {
     type: NodeTypes.ELEMENT,
     tag,
@@ -113,7 +117,8 @@ function parseText1(context: any): any {
 }
 function parseText(context: any) {
   let endIndex = context.source.length;
-  let endTokens = ["</", "{{"];
+  let endTokens = ["<", "{{"];
+  // let endTokens = "{{";
 
   for (let i = 0; i < endTokens.length; i++) {
     const index = context.source.indexOf(endTokens[i]);
@@ -121,8 +126,14 @@ function parseText(context: any) {
       endIndex = index;
     }
   }
+  // const index = context.source.indexOf(endTokens)
+  // if (index !== -1) {
+  //   endIndex = index;
+  // }
 
   const content = parseTextData(context, endIndex);
+  // console.log(content);
+  // return
 
   return {
     type: NodeTypes.TEXT,
