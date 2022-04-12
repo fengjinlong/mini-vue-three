@@ -1,8 +1,6 @@
 export function generate(ast) {
   // return {
-  //   code: `
-  //   return function render(_ctx, _cache) {return "hi"}
-  //   `,
+  //   code: `return function render(_ctx, _cache) {return "hi"}`,
   // };
 
   const context = createCodegenContext();
@@ -10,7 +8,7 @@ export function generate(ast) {
   const functionName = "render";
   const args = ["_ctx", "_cache"];
   const signature = args.join(", ");
-  push(`   return function ${functionName}(${signature}) {`);
+  push(`return function ${functionName}(${signature}) {`);
   push("return ");
   genNode(ast.codegenNode, context);
   push("}");
