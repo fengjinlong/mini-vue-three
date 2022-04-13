@@ -52,6 +52,7 @@ function startsWithEndTagOpen(source, tag) {
 function createRoot(children) {
   return {
     children,
+    type: NodeTypes.ROOT,
   };
 }
 
