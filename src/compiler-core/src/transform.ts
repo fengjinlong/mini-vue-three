@@ -10,10 +10,11 @@ export function transform(root, options = {}) {
 
 function traverseNode(node: any, context: any) {
   const nodeTransforms = context.nodeTransforms;
-
+  const exitFns: any = [];
   for (let i = 0; i < nodeTransforms.length; i++) {
-    const transform = nodeTransforms[i];
-    transform(node);
+    const transform1 = nodeTransforms[i];
+    const onExit = transform1(node, context);
+    if (onExit) exitFns.push(onExit);
   }
   switch (node.type) {
     case NodeTypes.INTERPOLATION:
@@ -25,6 +26,10 @@ function traverseNode(node: any, context: any) {
       break;
     default:
       break;
+  }
+  let i = exitFns.length;
+  while (i--) {
+    exitFns[i]();
   }
 }
 function traverseChildren(node: any, context: any) {
@@ -50,5 +55,10 @@ function createTransformContext(root: any, options: any) {
   return context;
 }
 function createRootCodegen(root: any) {
-  root.codegenNode = root.children[0];
+  const child = root.children[0];
+  if (child.type === NodeTypes.ELEMENT) {
+    root.codegenNode = child.codegenNode;
+  } else {
+    root.codegenNode = root.children[0];
+  }
 }
