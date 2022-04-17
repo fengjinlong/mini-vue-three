@@ -21,3 +21,4 @@ export const toHandlerKey = (str: string) => {
 };
 export const isString = (str: string) => typeof str === "string";
 export const isOn = (key: string) => /^on[A-Z]/.test(key);
+export * from "./toDisplayString";

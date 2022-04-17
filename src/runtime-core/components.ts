@@ -81,12 +81,15 @@ function finishComponentSetup(instance: any) {
   if(compiler && !Component.render) {
     if(Component.template) {
       Component.render = compiler(Component.template)
+      console.log(Component.render)
     }
-  }
+  } 
 
-  // 1 用户写好的render
-  // 2 用户没写 render，只写了template, 要把template 转成render函数
-  instance.render = Component.render;
+    
+    // 1 用户写好的render
+    // 2 用户没写 render，只写了template, 要把template 转成render函数
+    instance.render = Component.render;
+  
 }
 
 export function getCurrentInstance() {

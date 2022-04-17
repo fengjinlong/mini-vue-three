@@ -1,8 +1,8 @@
 const queue: any = [];
 let isFlushPending = false;
-let p = Promise.resolve;
+let p = Promise.resolve();
 export function nextTick(fn) {
-  return fn ? p().then(fn) : p();
+  return fn ? p.then(fn) : p;
 }
 
 export function queueJobs(job) {
