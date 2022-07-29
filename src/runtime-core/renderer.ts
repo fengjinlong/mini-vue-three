@@ -191,7 +191,6 @@ export function createRenderer(options) {
         // 或者下面的逻辑
         // let c2Have =c2[e2 + 1] ? c2[e2 + 1] : c2[nextPos];
         // let anchor = i + 1 < c2.length ? c2Have.el : null;
-
         while (i <= e2) {
           patch(null, c2[i], container, parentComponent, anchor);
           i++;
