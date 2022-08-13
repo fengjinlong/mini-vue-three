@@ -238,6 +238,7 @@ export function createRenderer(options) {
         newIndexToOldIndexMap[i] = 0;
       }
 
+      // 新节点初始化 map
       for (let i = s2; i <= e2; i++) {
         const nextChild = c2[i];
         keyToNewIndexMap.set(nextChild.key, i);
