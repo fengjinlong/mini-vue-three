@@ -327,7 +327,8 @@ export function createRenderer(options) {
         }
       }
 
-      if (oldProps !== {}) {
+      // if (oldProps !== {}) {
+      if (!!oldProps) {
         for (const key in oldProps) {
           if (!(key in newProps)) {
             hostPatchProp(el, key, oldProps[key], null);

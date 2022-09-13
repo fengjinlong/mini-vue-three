@@ -79,16 +79,16 @@ import { ref, h } from "../../lib/guide-mini-vue.esm.js";
 // (b c)
 // i = 0, e1 = 0, e2 = -1
 
-const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
-const nextChildren = [
-  // h("p", { key: "C3" }, "Ca3"),
-  // h("p", { key: "C2" }, "Ca2"),
-  // h("p", { key: "D1" }, "D1"),
-  h("p", { key: "D" }, "D"),
-  h("p", { key: "C" }, "C"),
-  h("p", { key: "A" }, "A"),
-  h("p", { key: "B" }, "B"),
-];
+// const prevChildren = [h("p", { key: "A" }, "A"), h("p", { key: "B" }, "B")];
+// const nextChildren = [
+//   // h("p", { key: "C3" }, "Ca3"),
+//   // h("p", { key: "C2" }, "Ca2"),
+//   // h("p", { key: "D1" }, "D1"),
+//   // h("p", { key: "D" }, "D"),
+//   // h("p", { key: "C" }, "C"),
+//   // h("p", { key: "A" }, "A"),
+//   // h("p", { key: "B" }, "B"),
+// ];
 
 // 5. 对比中间的部分
 // 删除老的  (在老的里面存在，新的里面不存在)
@@ -147,30 +147,30 @@ const nextChildren = [
 
 
 // 2 移动 (节点存在于新的和老的里面，但是位置变了)
-// const prevChildren = [
-//   h("p", { key: "A" }, "A"),
-//   h("p", { key: "B" }, "B"),
+const prevChildren = [
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
   
-//   h("p", { key: "C" }, "C"),
-//   // 创建的逻辑注释
-//   // h("p", { key: "D" }, "D"),
-//   h("p", { key: "E" }, "E"),
+  h("p", { key: "C" }, "C"),
+  // 创建的逻辑注释
+  h("p", { key: "D" }, "D"),
+  h("p", { key: "E" }, "E"),
   
-//   h("p", { key: "F" }, "F"),
-//   h("p", { key: "G" }, "G"),
-// ];
+  h("p", { key: "F" }, "F"),
+  h("p", { key: "G" }, "G"),
+];
 
-// const nextChildren = [
-//   h("p", { key: "A" }, "A"),
-//   h("p", { key: "B" }, "B"),
+const nextChildren = [
+  h("p", { key: "A" }, "A"),
+  h("p", { key: "B" }, "B"),
 
-//   h("p", { key: "E" }, "E"),
-//   h("p", { key: "C" }, "C"),
-//   h("p", { key: "D" }, "D"),
+  h("p", { key: "E" }, "E"),
+  h("p", { key: "C" }, "C1"),
+  h("p", { key: "D" }, "D2"),
   
-//   h("p", { key: "F" }, "F"),
-//   h("p", { key: "G" }, "G"),
-// ];
+  h("p", { key: "F" }, "F"),
+  h("p", { key: "G" }, "G"),
+];
 
 // 综合例子
 // a,b,(c,d,e,z),f,g

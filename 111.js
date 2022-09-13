@@ -71,3 +71,19 @@ const data = [
 for (let i = 0; i < 3; i++) {
   Factory(data[i].type, data[i].content);
 }
+export function transform(root, options = {}) {
+  const context = createTransformContext(root, options);
+
+  const nodeTransforms = context.nodeTransforms;
+  const exitFns: any = [];
+  for (let i = 0; i < nodeTransforms.length; i++) {
+    const transform1 = nodeTransforms[i];
+    const onExit = transform1(node, context);
+    if (onExit) exitFns.push(onExit);
+  }
+
+  let i = exitFns.length;
+  while (i--) {
+    exitFns[i]();
+  }
+}
