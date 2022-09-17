@@ -5,19 +5,23 @@ export const App = {
   name: "App",
   setup() {
     const msg = ref("123");
-    const count = ref(1);
+    // const count = ref(1);
 
     window.msg = msg;
 
     const changeChildProps = () => {
-      msg.value = "456";
+      for (let i = 0; i < 100; i++) {
+        msg.value = i;
+      }
+      // msg.value = "456";
     };
 
-    const changeCount = () => {
-      count.value++;
-    };
+    // const changeCount = () => {
+    //   count.value++;
+    // };
 
-    return { msg, changeChildProps, changeCount, count };
+    return { msg, changeChildProps };
+    // return { msg, changeChildProps, changeCount, count };
   },
 
   render() {
@@ -33,14 +37,14 @@ export const App = {
       h(Child, {
         msg: this.msg,
       }),
-      h(
-        "button",
-        {
-          onClick: this.changeCount,
-        },
-        "change self count"
-      ),
-      h("p", {}, "count: " + this.count),
+      // h(
+      //   "button",
+      //   {
+      //     onClick: this.changeCount,
+      //   },
+      //   "change self count"
+      // ),
+      // h("p", {}, "count: " + this.count),
     ]);
   },
 };
