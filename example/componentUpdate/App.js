@@ -10,7 +10,7 @@ export const App = {
     window.msg = msg;
 
     const changeChildProps = () => {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 10; i++) {
         msg.value = i;
       }
       // msg.value = "456";

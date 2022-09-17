@@ -439,6 +439,8 @@ export function createRenderer(options) {
         console.log("带调度器的 effect 执行了");
 
         if (!instance.isMounted) {
+          console.log("mount", instance.vnode.type);
+
           const { proxy } = instance;
           const subTree = (instance.subTree = instance.render.call(
             proxy,
@@ -449,6 +451,7 @@ export function createRenderer(options) {
           initialVNode.el = subTree.el;
           instance.isMounted = true;
         } else {
+          console.log("update", instance.vnode.type);
           // console.warn("update");
           const { next, vnode } = instance;
           if (next) {
