@@ -23,7 +23,7 @@ function createGetter(isReadOnly = false, shallow = false) {
       return isReadOnly ? readonly(res) : reactive(res);
     }
     if (!isReadOnly) {
-      console.log("track key --- ", key);
+      // console.log("track key --- ", key);
 
       track(target, key);
     }
@@ -32,9 +32,32 @@ function createGetter(isReadOnly = false, shallow = false) {
 }
 function createSetter(isReadOnly = false) {
   return function set(target, key, value) {
-    const res = Reflect.set(target, key, value);
+    console.log("old", target[key]);
 
-    trigger(target, key);
+    // for length
+    const oldVal = target[key];
+
+    const res = Reflect.set(target, key, value);
+    // console.log("n", Number(key));
+    // console.log("key", key);
+
+    console.log("new", value);
+
+    console.log("bbb", value === target[key]);
+
+    const type = Array.isArray(target)
+      ? Number(key) < target.length
+        ? "SET"
+        : "ADD"
+      : "";
+
+    // console.log("value", value);
+    if (oldVal !== value) {
+      trigger(target, key, type, value);
+    } else {
+      trigger(target, key, type);
+    }
+
     return res;
   };
 }

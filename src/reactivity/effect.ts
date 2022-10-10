@@ -78,9 +78,38 @@ export function isTracking() {
   return shouldTrack && activeEffect !== undefined;
 }
 
-export function trigger(target: any, key: any) {
+export function trigger(target: any, key: any, type = "", newValue = "") {
   let depsMap = targetMap.get(target);
   let dep = depsMap.get(key);
+
+  if (!dep) {
+    dep = new Set();
+    depsMap.set(key, dep);
+  }
+  if (key === "length" && Array.isArray(target)) {
+    console.log("ddd", depsMap);
+    depsMap.forEach((effects, index) => {
+      if (index >= newValue) {
+        effects.forEach((efn) => {
+          if (efn !== activeEffect) {
+            dep.add(efn);
+          }
+        });
+      }
+    });
+  }
+  if (type === "ADD" && Array.isArray(target)) {
+    // console.log("depsMap", depsMap.get("length"));
+
+    // console.log("ff", dep);
+    const lengthEffect = depsMap.get("length");
+    lengthEffect &&
+      lengthEffect.forEach((effectFn) => {
+        if (effectFn !== activeEffect) {
+          dep.add(activeEffect);
+        }
+      });
+  }
   triggerEffects(dep);
 }
 

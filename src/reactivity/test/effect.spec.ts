@@ -104,16 +104,31 @@ describe("array", () => {
     arr[0] = "bar";
     expect(e).toBe("bar");
   });
-  it.only("arr", () => {
+  it("arr", () => {
     // array
     const arr = reactive(["foo"]);
-    let e = 0;
+    let e = 3;
     effect(() => {
-      console.log("length --- ", arr.length);
+      // console.log("length --- ", arr[0]);
 
       e = arr.length;
     });
-    arr[1] = "bar";
-    expect(e).toBe(2);
+    // arr[1] = "bar";
+    arr.length = 0;
+    expect(e).toBe(0);
+    arr.length = 10;
+    expect(e).toBe(10);
+  });
+  it("length变为0，arr[0] 触发依赖", () => {
+    // array
+    const arr = reactive(["foo"]);
+    let e = arr[0];
+    effect(() => {
+      e = arr[0];
+    });
+    arr.length = 0;
+    console.log("eee", e);
+
+    // expect(e).toBe(undefined);
   });
 });
