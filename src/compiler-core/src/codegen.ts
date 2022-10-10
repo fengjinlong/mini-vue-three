@@ -123,7 +123,7 @@ function genText(
 
 function genInterpolation(node: any, context: any) {
   const { push, helper } = context;
-  console.log(node);
+  // console.log(node);
   push(`${helper(TO_DISPLAY_STRING)}(`);
   genNode(node.content, context);
   push(")");

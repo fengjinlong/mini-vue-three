@@ -93,3 +93,27 @@ describe("effect", () => {
     expect(onStop).toBeCalledTimes(1);
   });
 });
+describe("array", () => {
+  it("arr", () => {
+    // array
+    const arr = reactive(["foo"]);
+    let e = "";
+    effect(() => {
+      e = arr[0];
+    });
+    arr[0] = "bar";
+    expect(e).toBe("bar");
+  });
+  it.only("arr", () => {
+    // array
+    const arr = reactive(["foo"]);
+    let e = 0;
+    effect(() => {
+      console.log("length --- ", arr.length);
+
+      e = arr.length;
+    });
+    arr[1] = "bar";
+    expect(e).toBe(2);
+  });
+});

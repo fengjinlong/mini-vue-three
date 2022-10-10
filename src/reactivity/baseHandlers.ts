@@ -23,6 +23,8 @@ function createGetter(isReadOnly = false, shallow = false) {
       return isReadOnly ? readonly(res) : reactive(res);
     }
     if (!isReadOnly) {
+      console.log("track key --- ", key);
+
       track(target, key);
     }
     return res;
@@ -31,6 +33,7 @@ function createGetter(isReadOnly = false, shallow = false) {
 function createSetter(isReadOnly = false) {
   return function set(target, key, value) {
     const res = Reflect.set(target, key, value);
+
     trigger(target, key);
     return res;
   };
