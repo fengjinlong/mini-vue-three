@@ -32,7 +32,7 @@ function createGetter(isReadOnly = false, shallow = false) {
 }
 function createSetter(isReadOnly = false) {
   return function set(target, key, value) {
-    console.log("old", target[key]);
+    // console.log("old", target[key]);
 
     // for length
     const oldVal = target[key];
@@ -41,9 +41,9 @@ function createSetter(isReadOnly = false) {
     // console.log("n", Number(key));
     // console.log("key", key);
 
-    console.log("new", value);
+    // console.log("new", value);
 
-    console.log("bbb", value === target[key]);
+    // console.log("bbb", value === target[key]);
 
     const type = Array.isArray(target)
       ? Number(key) < target.length
@@ -62,6 +62,12 @@ function createSetter(isReadOnly = false) {
   };
 }
 export const mutableHandler = {
+  ownKeys(target) {
+    console.log("dddddd", target);
+
+    track(target, Array.isArray(target) ? "length" : "ITERATE_KEY");
+    return Reflect.ownKeys(target);
+  },
   get,
   set,
 };

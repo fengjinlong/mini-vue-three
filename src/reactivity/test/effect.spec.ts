@@ -131,4 +131,16 @@ describe("array", () => {
 
     // expect(e).toBe(undefined);
   });
+  it.only("ownKeys", () => {
+    // array
+    const arr = reactive(["foo", "q"]);
+    effect(() => {
+      for (const key in arr) {
+        console.log("ss2s", key);
+      }
+    });
+    arr.length = 10;
+
+    // expect(e).toBe(undefined);
+  });
 });
